@@ -1,5 +1,12 @@
 <?php
 
+// TODO: Lista de implementações
+// [x] Mover para controllers
+// [ ] Gerenciamento das mensagens colocar em model
+// [ ] Aplicar estrategia para usar arquivos, ou bancos de dados e ou filas
+// [ ] Abstrair Stream Response
+// [ ] Abstrar a obtenção dos dados do POST json
+
 use App\Messages\FileManager;
 
 $app->get('/', function () {
