@@ -18,6 +18,7 @@ class App
         $method = strtolower($_SERVER['REQUEST_METHOD']);
         $uri = $_SERVER['REQUEST_URI'];
         $route = $this->getRoute($method, $uri);
+        
         if (!$route) {
             $route = [
                 'callback' => function () {

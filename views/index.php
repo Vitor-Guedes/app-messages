@@ -42,7 +42,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script>
-        var sse = new EventSource('/sse.php');
+        var sse = new EventSource('/serverSentEvents');
 
         sse.addEventListener('new_message', function (event) {
             var container = document.querySelector('#messages');
@@ -57,7 +57,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             var container = document.querySelector('#messages');
             if (container.childNodes.length == 0) {
-                fetch('/getAllMessages.php', {
+                fetch('/getAllMessages', {
                     method: "GET"
                 }).then(response => {
                     return response.json()
@@ -72,7 +72,7 @@
 
         var sendMessage = function (id) {
             var input = document.querySelector('#message_' + id);
-            fetch('/sendMessage.php', {
+            fetch('/sendMessages', {
                 method: "POST",
                 body: JSON.stringify({
                     user_id: id,
