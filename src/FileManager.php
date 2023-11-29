@@ -35,4 +35,16 @@ class FileManager
             file_put_contents($file, $content);
         }
     }
+
+    /**
+     * Convert content to array
+     *
+     * @param string $filename
+     * @return array
+     */
+    public static function toArray(string $filename) : array
+    {
+        $content = static::getContent($filename);
+        return json_decode($content, true);
+    }
 }

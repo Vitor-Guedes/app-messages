@@ -41,7 +41,33 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <script>
+    <script> 
+        // [ ] Criar class que gerencia as mensagens e renderiza os components
+        var messages = [];
+
+        var loadMessages = function () {
+            fetch('/getAllMessages', {
+                method: "GET"
+            }).then(response => {
+                return response.json()
+            }).then(response => {
+                messages = Array.from(response);
+                showMessages();
+            });
+        }
+
+        loadMessages();
+
+        var showMessages = function () {
+            var container = document.querySelector('#messages');
+            if (container.childNodes.length == 0) {
+                messages.forEach(message => {
+                    var html = baseHtmlMessage(message['user_id'], message['message']);
+                    container.appendChild(html.querySelector('div.row'));
+                });
+            }
+        }
+
         var sse = new EventSource('/serverSentEvents');
 
         sse.addEventListener('new_message', function (event) {
@@ -55,19 +81,7 @@
         });
 
         document.addEventListener('DOMContentLoaded', function () {
-            var container = document.querySelector('#messages');
-            if (container.childNodes.length == 0) {
-                fetch('/getAllMessages', {
-                    method: "GET"
-                }).then(response => {
-                    return response.json()
-                }).then(response => {
-                    Array.from(response).forEach(message => {
-                        var html = baseHtmlMessage(message['user_id'], message['message']);
-                        container.appendChild(html.querySelector('div.row'));
-                    });
-                });
-            }
+            showMessages();
         });
 
         var sendMessage = function (id) {

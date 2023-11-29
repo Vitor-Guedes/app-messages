@@ -2,7 +2,9 @@
 
 namespace App\Messages;
 
+use App\Messages\Http\Response;
 use App\Messages\Traits\Router;
+use Exception;
 
 class App
 {
@@ -15,9 +17,10 @@ class App
      */
     public function run() : void
     {
-        $method = strtolower($_SERVER['REQUEST_METHOD']);
-        $uri = $_SERVER['REQUEST_URI'];
-        $route = $this->getRoute($method, $uri);
+        $route = $this->getRoute(
+            request()->getMethod(),
+            request()->getUri()
+        );
         
         if (!$route) {
             $route = [
@@ -26,6 +29,7 @@ class App
                 }
             ];
         }
+
         $this->execute($route);
     }
 
@@ -66,6 +70,29 @@ class App
      */
     protected function execute(array $route) : void
     {
-        echo call_user_func_array($route['callback'], []);
+        if (is_callable($route['callback'])) {
+            echo call_user_func_array($route['callback'], []);
+            return ;
+        }
+
+        $response = new Response();
+        
+        if (is_array($route['callback'])) {
+            $controller = $route['callback'][0];
+            $action = $route['callback'][1];
+
+            if (!class_exists($controller)) {
+                throw new Exception("Class $controller not exists");
+            }
+
+            $instance = new $controller;
+            if (!method_exists($instance, $action)) {
+                throw new Exception("Method: $action not exists in $controller");
+            }
+
+            $response = call_user_func_array([$instance, $action], []);
+        }
+
+        $response->send();
     }
 }
