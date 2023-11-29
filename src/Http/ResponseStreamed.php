@@ -4,7 +4,7 @@ namespace App\Messages\Http;
 
 class ResponseStreamed extends Response
 {
-    public function __construct(protected $callback, protected int $interval) 
+    public function __construct(protected $event, protected int $interval) 
     {
         $this->setHeader('Access-Control-Allow-Origin', '*');
         $this->setHeader('Content-Type', 'text/event-stream');
@@ -24,10 +24,8 @@ class ResponseStreamed extends Response
                 break ;
             }
 
-            $callback = $this->callback;
-            $event = $callback();
-
-            echo $event;
+            $event = new $this->event;
+            echo $event->resolve();
            
             ob_flush();
             flush();

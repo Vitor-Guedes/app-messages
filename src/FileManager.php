@@ -3,6 +3,10 @@
 namespace App\Messages;
 
 use Exception;
+use function file_exists;
+use function json_decode;
+use function file_get_contents;
+use function file_put_contents;
 
 class FileManager
 {

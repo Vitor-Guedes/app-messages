@@ -2,6 +2,7 @@
 
 namespace App\Messages\Controllers;
 
+use App\Messages\Entity\NewMessagesStream;
 use App\Messages\FileManager;
 use App\Messages\Http\Response;
 use App\Messages\Http\ResponseStreamed;
@@ -72,27 +73,6 @@ class MessageController
      */
     public function serverSentEvent() : ResponseStreamed
     {
-        return new ResponseStreamed(function () {
-            $messages = FileManager::toArray($this->fileMessages);
-
-            $newMessages = [];
-    
-            foreach ($messages as $index => $message) {
-                if ($message['new']) {
-                    $newMessages[] = $message;
-                    $messages[$index]['new'] = false;
-                }
-            }
-    
-            FileManager::setContent(
-                $this->fileMessages, 
-                json_encode($messages, JSON_PRETTY_PRINT)
-            );
-    
-            $event = "event: new_message\n"; 
-            $event .= "data: " . json_encode($newMessages) . "\n";
-            $event .= "\n";
-            return $event;
-        }, 5);
+        return new ResponseStreamed(NewMessagesStream::class, 5);
     }
 }
