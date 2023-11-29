@@ -2,10 +2,10 @@
 
 namespace App\Messages\Controllers;
 
-use App\Messages\Entity\NewMessagesStream;
 use App\Messages\FileManager;
 use App\Messages\Http\Response;
 use App\Messages\Http\ResponseStreamed;
+use App\Messages\Entity\NewMessagesStream;
 
 class MessageController
 {

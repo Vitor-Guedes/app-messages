@@ -16,7 +16,7 @@ class FileManager
      * @param string $filename
      * @return string
      */
-    public static function getContent(string $filename)
+    public static function getContent(string $filename) : string
     {
         $file = BASE_FILE . $filename;
         if (file_exists($file)) {

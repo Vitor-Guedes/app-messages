@@ -10,7 +10,12 @@ class NewMessagesStream extends Event
 
     protected $data = '';
 
-    public function resolve()
+    /**
+     * Resolve de streame event to response
+     *
+     * @return string
+     */
+    public function resolve() : string
     {
         $file = '/messages.json';
         $messages = FileManager::toArray($file);
