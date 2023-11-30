@@ -1,3 +1,6 @@
 /vendor/
 public/messages.json
 .vscode/
+.env
+artisan
+composer.lock
