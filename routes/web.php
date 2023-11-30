@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [Controller::class, 'index'])->name('index');
+Route::post('/messages/send', [Controller::class, 'sendMessage'])->name('send_message');
+Route::get('/messages/all', [Controller::class, 'getAllMessages'])->name('get_all_messages');
+Route::get('/server/sent/event', [Controller::class, 'serverSentEvent'])->name('server_sent_event');

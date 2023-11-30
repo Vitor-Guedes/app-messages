@@ -1,5 +1,7 @@
 <?php
 
+use App\Services\DatabaseService;
+use App\Services\FileService;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
 
@@ -185,4 +187,15 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    /*
+    |
+    | Strategy App service to app messages
+    |
+    */
+    'app_message' => env('APP_MESSAGE', 'file'),
+
+    'app_message_service' => [
+        'file' => FileService::class,
+        'database' => DatabaseService::class
+    ]
 ];
